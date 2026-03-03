@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Guild Activity Pro - Live</title>
+    <style>
+        :root {
+            --neon-blue: #22d3ee;
+            --glory-gold: #facc15;
+            --xp-green: #22c55e;
+            --dark-bg: #020617;
+            --card-bg: rgba(15, 23, 42, 0.7);
+            --border: rgba(34, 211, 238, 0.15);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle at top, #0f172a 0%, #020617 100%);
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .header {
+            padding: 20px;
+            text-align: center;
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+        }
+
+        /* LIVE CONTAINER */
+        .guild-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+        }
+
+        /* ANIMATED LIST */
+        .guild-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px;
+            will-change: transform;
+            animation: scrollLoop 40s linear infinite;
+        }
+
+        @keyframes scrollLoop {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+
+        .guild-container:active .guild-list {
+            animation-play-state: paused;
+        }
+
+        /* GUILD CARDS */
+        .guild-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: border-color 0.3s;
+        }
+
+        .guild-info .name {
+            color: var(--neon-blue);
+            font-weight: 800;
+            font-size: 16px;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+        }
+
+        .guild-info .id {
+            color: #64748b;
+            font-size: 11px;
+            margin-top: 4px;
+            font-family: monospace;
+        }
+
+        /* STATS STYLING */
+        .stats { text-align: right; }
+        
+        .stat-row {
+            font-size: 13px;
+            font-weight: 600;
+            margin: 2px 0;
+        }
+
+        .glory { color: var(--glory-gold); }
+        .xp { color: var(--xp-green); }
+
+        /* UPDATE ANIMATION */
+        .val-up {
+            animation: pulse 0.6s ease-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); color: #fff; }
+            50% { transform: scale(1.1); color: #fff; text-shadow: 0 0 8px currentColor; }
+            100% { transform: scale(1); }
+        }
+
+        /* NAVIGATION */
+        .bottom-nav {
+            background: rgba(2, 6, 23, 0.95);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0 25px 0; /* Extra bottom padding for modern phones */
+            border-top: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #475569;
+            font-size: 10px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .nav-item.active { color: var(--neon-blue); }
+        
+        .nav-icon {
+            font-size: 22px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+    </style>
+</head>
+<body>
+
+<header class="header">🛡️ Guild Activity</header>
+
+<main class="guild-container">
+    <div class="guild-list" id="guildList"></div>
+</main>
+
+<nav class="bottom-nav">
+    <div class="nav-item active" onclick="location.href='index.html'">
+        <span class="nav-icon">🏠</span>HOME
+    </div>
+    <div class="nav-item active" onclick="location.href='guild.html'">
+        <span class="nav-icon">🛡️</span>GUILD
+    </div>
+    <div class="nav-item active" onclick="location.href='Purchase.html'">
+        <span class="nav-icon">💎</span>VIP
+    </div>
+    <div class="nav-item active" onclick="location.href='admin.html'">
+        <span class="nav-icon">⚙️</span>SETTING
+    </div>
+</nav>
+
+<script>
+    const names = ["Alpha", "Shadow", "Titan", "Dragon", "Ghost", "Omega", "Viper", "Cyber", "Royal", "Elite", "Void", "Storm"];
+    const suffixes = ["Slayers", "Kings", "Force", "Squad", "Legion", "Warriors", "Empire", "Ninjas", "Reapers"];
+    
+    const list = document.getElementById('guildList');
+
+    function generateCard() {
+        const guildName = names[Math.floor(Math.random()*names.length)] + " " + suffixes[Math.floor(Math.random()*suffixes.length)];
+        const gid = Math.floor(10000000 + Math.random() * 90000000);
+        
+        return `
+            <div class="guild-card">
+                <div class="guild-info">
+                    <div class="name">${guildName}</div>
+                    <div class="id">ID: ${gid}</div>
+                </div>
+                <div class="stats">
+                    <div class="stat-row glory">Glory: <span class="g-val">${Math.floor(Math.random()*9000)}</span></div>
+                    <div class="stat-row xp">XP: <span class="x-val">${Math.floor(Math.random()*2000)}</span></div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Populate List
+    let items = "";
+    for(let i=0; i<25; i++) items += generateCard();
+    list.innerHTML = items + items; // Duplicate for seamless scroll
+
+    // Live Updates
+    const gVals = document.querySelectorAll('.g-val');
+    const xVals = document.querySelectorAll('.x-val');
+
+    setInterval(() => {
+        // Randomly pick 3 cards to update
+        for(let i=0; i<3; i++) {
+            const idx = Math.floor(Math.random() * gVals.length);
+            const g = gVals[idx];
+            const x = xVals[idx];
+
+            // Update Values
+            g.innerText = parseInt(g.innerText) + Math.floor(Math.random()*15);
+            x.innerText = parseInt(x.innerText) + Math.floor(Math.random()*8);
+
+            // Add Animation Class
+            g.classList.add('val-up');
+            x.classList.add('val-up');
+            
+            setTimeout(() => {
+                g.classList.remove('val-up');
+                x.classList.remove('val-up');
+            }, 600);
+        }
+    }, 1500);
+</script>
+
+</body>
+</html>

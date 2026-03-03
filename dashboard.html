@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>VIP VOTE PANEL | ULTIMATE</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+    --gold: #ffcc00;
+    --red: #ff0044;
+    --purple: #8a2be2;
+    --blue: #00d2ff;
+    --glass: rgba(255, 255, 255, 0.03);
+    --border: rgba(255, 255, 255, 0.08);
+}
+
+* { margin:0; padding:0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+    background: #020202; color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden; min-height: 100vh;
+    padding-bottom: 70px;
+}
+
+/* --- CINEMATIC BACKGROUND --- */
+.bg-canvas {
+    position: fixed; inset: 0;
+    background: radial-gradient(circle at 20% 30%, #1a0033 0%, #000 100%);
+    z-index: -1;
+}
+.glow-orb {
+    position: fixed; width: 300px; height: 300px; background: var(--purple);
+    filter: blur(150px); opacity: 0.1; top: -50px; right: -50px; pointer-events: none;
+}
+
+/* --- HEADER HUD --- */
+header {
+    padding: 25px; border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(20px); text-align: center;
+    position: sticky; top: 0; z-index: 100;
+}
+
+.brand-title {
+    font-family: 'Orbitron'; font-size: 20px; font-weight: 900;
+    letter-spacing: 4px; background: linear-gradient(90deg, #fff, var(--gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.live-stats {
+    display: flex; justify-content: center; gap: 15px; margin-top: 10px;
+}
+
+.stat-chip {
+    font-size: 10px; color: #00ff00; background: rgba(0,255,0,0.05);
+    padding: 3px 10px; border-radius: 50px; border: 1px solid rgba(0,255,0,0.1);
+}
+
+.container {
+    max-width: 480px; margin: auto; padding: 15px;
+    display: flex; flex-direction: column; gap: 15px;
+}
+
+/* --- ACTIVITY FEED --- */
+.activity-feed {
+    background: rgba(255,255,255,0.02); border-radius: 15px;
+    padding: 12px; border: 1px solid var(--border); height: 55px; overflow: hidden;
+}
+.feed-track { animation: slideUp 12s infinite linear; }
+.feed-item { font-size: 11px; color: #888; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; height: 31px; }
+.feed-item b { color: var(--gold); }
+.dot { width: 5px; height: 5px; background: #00ff00; border-radius: 50%; display: inline-block; box-shadow: 0 0 5px #00ff00; }
+@keyframes slideUp { 0% { transform: translateY(0); } 100% { transform: translateY(-155px); } }
+
+/* --- THE GRID --- */
+.grid-container {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.vote-card {
+    background: var(--glass); border: 1px solid var(--border);
+    border-radius: 24px; padding: 25px 15px; text-align: center;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative; overflow: hidden; height: 190px;
+    display: flex; flex-direction: column; justify-content: center;
+}
+.vote-card.active {
+    background: rgba(255, 204, 0, 0.05);
+    border-color: var(--gold);
+    transform: scale(1.03) translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 15px rgba(255,204,0,0.1);
+}
+.legendary-card.active {
+    border-color: var(--purple);
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+    animation: pulseGlow 2s infinite;
+}
+@keyframes pulseGlow { 0%,100% { border-color: var(--purple); } 50% { border-color: var(--blue); } }
+
+.badge { position: absolute; top: 12px; right: 12px; font-size: 8px; font-weight: 900; padding: 2px 8px; border-radius: 4px; background: #222; color: #888; text-transform: uppercase; }
+.active .badge { background: var(--gold); color: #000; }
+
+.icon-wrapper { font-size: 40px; margin-bottom: 10px; transition: 0.3s; }
+.active .icon-wrapper { transform: scale(1.2); filter: drop-shadow(0 0 10px var(--gold)); }
+
+.tier-name { font-family: 'Orbitron'; font-size: 11px; color: #666; letter-spacing: 2px; }
+.price-tag { font-size: 26px; font-weight: 900; margin: 8px 0; font-family: 'Rajdhani'; }
+
+/* --- CHECKOUT PANEL --- */
+.checkout-box {
+    background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+    border: 1px solid var(--border); border-radius: 24px; padding: 20px;
+    text-align: center; backdrop-filter: blur(10px);
+}
+.checkout-btn {
+    width: 100%; padding: 20px; border-radius: 16px; border: none;
+    background: linear-gradient(90deg, var(--red), var(--purple));
+    color: #fff; font-family: 'Orbitron'; font-weight: 900;
+    font-size: 16px; letter-spacing: 2px; cursor: pointer;
+    box-shadow: 0 10px 25px rgba(255,0,68,0.3); transition: 0.3s;
+}
+.checkout-btn:active { transform: scale(0.95); }
+
+/* --- OVERLAY --- */
+#overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000;
+    display: none; flex-direction: column; justify-content: center; align-items: center;
+    backdrop-filter: blur(10px);
+}
+
+@keyframes fill { from { width: 0; } to { width: 100%; } }
+
+/* --- BOTTOM NAV --- */
+.bottom-nav {
+    position: fixed; bottom: 0; left:0; width: 100%; display: flex;
+    background: rgba(10,10,15,0.95); border-top: 1px solid var(--border);
+    backdrop-filter: blur(15px); z-index: 999;
+}
+.nav-item {
+    flex:1; text-align:center; padding: 12px 0;
+    font-size:10px; cursor:pointer; color:#666;
+    display:flex; flex-direction:column; align-items:center; font-family: 'Orbitron';
+}
+.nav-item.active { color: var(--gold); }
+.nav-icon { font-size:18px; margin-bottom:4px; }
+
+</style>
+</head>
+<body>
+
+<div class="bg-canvas"></div>
+<div class="glow-orb"></div>
+
+<header>
+    <div class="brand-title">👑 VIP GUILD BOT</div>
+    <div class="live-stats">
+        <div class="stat-chip"><span class="dot"></span> 1,240 ONLINE</div>
+        <div class="stat-chip" style="color:var(--gold)">⚡ SERVER: STABLE</div>
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="activity-feed">
+        <div class="feed-track">
+            <div class="feed-item"><span class="dot"></span> User <b>Abhi_FF</b> purchased Tier III</div>
+            <div class="feed-item"><span class="dot"></span> User <b>Killer99</b> purchased Tier IV</div>
+            <div class="feed-item"><span class="dot"></span> User <b>Bot_Hunter</b> purchased Tier II</div>
+            <div class="feed-item"><span class="dot"></span> User <b>Rex_Official</b> purchased Tier III</div>
+            <div class="feed-item"><span class="dot"></span> User <b>Viper_OP</b> purchased Tier I</div>
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <div class="vote-card" onclick="selectItem(this, 199, 'Tier I')">
+            <span class="badge">Basic</span>
+            <div class="icon-wrapper">🛡️</div>
+            <div class="tier-name">TIER I</div>
+            <div class="price-tag">₹199</div>
+        </div>
+        <div class="vote-card" onclick="selectItem(this, 499, 'Tier II')">
+            <span class="badge">Elite</span>
+            <div class="icon-wrapper">🔥</div>
+            <div class="tier-name">TIER II</div>
+            <div class="price-tag">₹499</div>
+        </div>
+        <div class="vote-card active" onclick="selectItem(this, 999, 'Tier III')">
+            <span class="badge">Popular</span>
+            <div class="icon-wrapper">👑</div>
+            <div class="tier-name">TIER III</div>
+            <div class="price-tag">₹999</div>
+        </div>
+        <div class="vote-card legendary-card" onclick="selectItem(this, 2499, 'Tier IV')">
+            <span class="badge" style="background:var(--purple); color:#fff">Ultimate</span>
+            <div class="icon-wrapper">💎</div>
+            <div class="tier-name">TIER IV</div>
+            <div class="price-tag">₹2,499</div>
+        </div>
+    </div>
+
+    <div class="checkout-box">
+        <div style="display:flex; justify-content:space-between; margin-bottom:15px; align-items:center;">
+            <div style="text-align:left">
+                <div style="font-size:10px; color:#555; font-family:Orbitron;">SELECTED TIER</div>
+                <div id="tierName" style="font-weight:bold; color:#fff">Tier III</div>
+            </div>
+            <div style="text-align:right">
+                <div style="font-size:10px; color:#555; font-family:Orbitron;">TOTAL PAYABLE</div>
+                <div id="finalTotal" style="font-size:22px; font-weight:900; color:var(--gold)">₹999</div>
+            </div>
+        </div>
+        <button class="checkout-btn" onclick="initiatePayment()">PROCEED TO CHECKOUT</button>
+    </div>
+
+</div>
+
+<div id="overlay">
+    <div style="font-family:Orbitron; color:var(--gold); font-size:14px; letter-spacing:2px;">INITIALIZING SECURE NODE</div>
+    <div style="width:150px; height:2px; background:#111; margin-top:20px; border-radius:10px; overflow:hidden;">
+        <div id="loader-bar" style="width:0%; height:100%; background:var(--gold);"></div>
+    </div>
+</div>
+
+<nav class="bottom-nav">
+    <div class="nav-item active" onclick="location.href='index.html'">
+        <span class="nav-icon">🏠</span>HOME
+    </div>
+    <div class="nav-item active" onclick="location.href='guild.html'">
+        <span class="nav-icon">🛡️</span>GUILD
+    </div>
+    <div class="nav-item active" onclick="location.href='Purchase.html'">
+        <span class="nav-icon">💎</span>VIP
+    </div>
+    <div class="nav-item active" onclick="location.href='admin.html'">
+        <span class="nav-icon">⚙️</span>SETTING
+    </div>
+</nav>
+
+<script>
+// Logic Variables
+let selectedPrice = 999;
+let selectedTier = "Tier III";
+
+// Selection Function
+function selectItem(el, price, name) {
+    document.querySelectorAll('.vote-card').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    
+    selectedPrice = price;
+    selectedTier = name;
+    
+    document.getElementById('tierName').innerText = name;
+    document.getElementById('finalTotal').innerText = `₹${price.toLocaleString('en-IN')}`;
+    
+    if(navigator.vibrate) navigator.vibrate(15);
+}
+
+// Payment Redirection Logic
+function initiatePayment() {
+    const overlay = document.getElementById('overlay');
+    const bar = document.getElementById('loader-bar');
+    
+    overlay.style.display = 'flex';
+    
+    // Smooth loader animation
+    let width = 0;
+    const interval = setInterval(() => {
+        if (width >= 100) {
+            clearInterval(interval);
+            // Redirect with Data
+            window.location.href = `payment.html?plan=${encodeURIComponent(selectedTier)}&price=${selectedPrice}`;
+        } else {
+            width += 5;
+            bar.style.width = width + '%';
+        }
+    }, 50);
+}
+</script>
+
+</body>
+</html>

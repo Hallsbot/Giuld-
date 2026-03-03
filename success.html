@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bot Status Ultra Premium</title>
+
+<style>
+:root {
+    --neon-blue: #22d3ee;
+    --neon-yellow: #facc15;
+    --neon-green: #4ade80;
+    --bg-dark: #020617;
+}
+
+body {
+    margin: 0;
+    background: radial-gradient(circle at top, #082f49, #020617, #000);
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 110px 15px 100px;
+    overflow-x: hidden;
+}
+
+/* ===== CONGRATS TOAST ===== */
+#congratsToast {
+    position: fixed;
+    top: 85px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(22, 163, 74, 0.9);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    z-index: 2000;
+    border: 1px solid rgba(74, 222, 128, 0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(74, 222, 128, 0.2);
+    animation: slideDownFade 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+@keyframes slideDownFade {
+    from { opacity: 0; top: 60px; }
+    to { opacity: 1; top: 85px; }
+}
+
+/* ===== PREMIUM HEADER ===== */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 22px 0;
+    background: rgba(2, 6, 23, 0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(34, 211, 238, 0.2);
+    text-align: center;
+    z-index: 1000;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    color: var(--neon-blue);
+    text-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
+    text-transform: uppercase;
+}
+
+.header .tagline {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: #94a3b8;
+    margin-top: 6px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+/* MAIN CARD */
+.card {
+    width: 100%;
+    max-width: 400px;
+    background: #020617;
+    border-radius: 24px;
+    padding: 25px;
+    border: 1px solid rgba(34, 211, 238, 0.2);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+    animation: cardAppear 0.8s ease-out;
+}
+
+@keyframes cardAppear {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* STATUS & UID */
+.uid-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.uid-text {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.status-badge {
+    background: rgba(22, 197, 94, 0.1);
+    color: #22c55e;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+/* PROFILE SECTION */
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.profile img {
+    width: 75px;
+    height: 75px;
+    border-radius: 14px;
+    border: 2px solid var(--neon-yellow);
+    object-fit: cover;
+}
+
+.level-badge {
+    color: var(--neon-yellow);
+    font-weight: bold;
+    font-size: 13px;
+}
+
+/* STATS GRID */
+.stats-grid {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.stat-box {
+    flex: 1;
+    background: #000814;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid rgba(34, 211, 238, 0.1);
+}
+
+.stat-label {
+    font-size: 10px;
+    color: #94a3b8;
+    text-transform: uppercase;
+}
+
+.stat-value {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--neon-blue);
+    margin-top: 5px;
+}
+
+/* PREMIUM BUTTONS */
+.btn-group {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.2s;
+}
+
+.btn-primary { background: var(--neon-yellow); color: #000; }
+.btn-secondary { background: #111827; color: #fff; }
+.btn-danger { background: #ef4444; color: white; }
+
+.btn:active { transform: scale(0.95); }
+
+/* ===== OLD STYLE BOTTOM NAV (Purana Look) ===== */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #020617;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-top: 1px solid rgba(34, 211, 238, 0.2);
+    z-index: 1000;
+}
+
+.nav-item {
+    text-align: center;
+    font-size: 12px;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.nav-item.active {
+    color: var(--neon-blue);
+    font-weight: bold;
+}
+
+.nav-icon {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 3px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="congratsToast">
+    <span>🎉</span> Congratulations! Bot Is Online & Secure
+</div>
+
+<header class="header">
+    <h1>👑 VIP GUILD BOT</h1>
+    <div class="tagline">Next-Gen AI Automated Systems • Elite Access</div>
+</header>
+
+<div class="card">
+    <div class="uid-row">
+        <span class="uid-text" id="mainUid">208595387</span>
+        <span class="status-badge" id="status">RUNNING</span>
+    </div>
+
+    <div style="color: #64748b; font-size: 12px; margin-bottom: 20px;">
+        ID: <span id="uidSmall">208595387</span> | <span id="loc">...</span> | <span id="botCount">0</span> BOTS
+    </div>
+
+    <div class="profile">
+        <img id="gImg" src="" alt="Guild">
+        <div>
+            <div class="level-badge">LV.<span id="lvl">0</span> ARCANE-X</div>
+            <div style="font-size: 13px; color: #94a3b8; margin-top: 5px;">
+                Members: <span id="mem" style="color:var(--neon-blue)">0</span>/40<br>
+                Captain: <span id="capName">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top:15px; background:#000814; padding:10px; border-radius:10px; font-size:13px; color:#94a3b8;">
+        Clan: <span id="clanName">...</span> | Region: <span id="reg">...</span>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-box">
+            <span class="stat-label">Uptime</span>
+            <span class="stat-value" id="ut">0h 0m</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-label">Total Glory</span>
+            <span class="stat-value" id="gl">0</span>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn btn-primary" onclick="setStatus('RUNNING')">Restart</button>
+        <button class="btn btn-secondary">Details</button>
+        <button class="btn btn-secondary" onclick="setStatus('PAUSED')">Stop</button>
+        <button class="btn btn-danger">Delete</button>
+    </div>
+
+    <p style="text-align: center; font-size: 11px; color: #475569; margin-top: 20px;">
+        ⚡ Guild Glory Bot System<br>
+        Auto AI Guild Processing
+    </p>
+</div>
+
+<nav class="bottom-nav">
+    <div class="nav-item active" onclick="location.href='index.html'">
+        <span class="nav-icon">🏠</span>HOME
+    </div>
+    <div class="nav-item active" onclick="location.href='guild.html'">
+        <span class="nav-icon">🛡️</span>GUILD
+    </div>
+    <div class="nav-item active" onclick="location.href='Purchase.html'">
+        <span class="nav-icon">💎</span>VIP
+    </div>
+    <div class="nav-item active" onclick="location.href='admin.html'">
+        <span class="nav-icon">⚙️</span>SETTING
+    </div>
+</nav>
+
+<script>
+    // Config & Data
+    const UID = localStorage.getItem("guild_uid") || "208595387";
+    const COUNTRY = localStorage.getItem("guild_country") || "IND";
+    
+    document.getElementById("mainUid").innerText = UID;
+    document.getElementById("uidSmall").innerText = UID;
+    document.getElementById("loc").innerText = COUNTRY;
+    document.getElementById("reg").innerText = COUNTRY;
+    document.getElementById("botCount").innerText = Math.floor(Math.random()*3)+2;
+    document.getElementById("lvl").innerText = Math.floor(Math.random()*5)+1;
+    document.getElementById("mem").innerText = Math.floor(Math.random()*35)+5;
+    document.getElementById("capName").innerText = Math.floor(1000000+Math.random()*9000000);
+    document.getElementById("clanName").innerText = Math.floor(100000000+Math.random()*900000000);
+
+    const imgs = [
+        "https://i.ibb.co/kV4pH6Vw/image.png",
+        "https://i.ibb.co/6Rfz7TJS/image.png",
+        "https://i.ibb.co/hRvN2bT3/image.png"
+    ];
+    document.getElementById("gImg").src = imgs[Math.floor(Math.random()*imgs.length)];
+
+    // Toast Logic
+    setTimeout(() => {
+        const toast = document.getElementById("congratsToast");
+        toast.style.transition = "0.5s";
+        toast.style.opacity = "0";
+        setTimeout(() => toast.remove(), 500);
+    }, 5000);
+
+    // Nav Logic
+    function setActive(el) {
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    // Live Status Logic
+    function setStatus(s) {
+        const b = document.getElementById("status");
+        b.innerText = s;
+        if(s === 'RUNNING') {
+            b.style.color = '#22c55e';
+            b.style.background = 'rgba(22, 197, 94, 0.1)';
+        } else {
+            b.style.color = '#ef4444';
+            b.style.background = 'rgba(239, 68, 68, 0.1)';
+        }
+    }
+
+    // Timers
+    let min = 0;
+    setInterval(() => {
+        if(document.getElementById("status").innerText === 'RUNNING') {
+            min++;
+            document.getElementById("ut").innerText = Math.floor(min/60) + "h " + (min%60) + "m";
+        }
+    }, 60000);
+
+    let g = 0;
+    setInterval(() => {
+        if(document.getElementById("status").innerText === 'RUNNING') {
+            g += Math.floor(Math.random()*50);
+            document.getElementById("gl").innerText = g.toLocaleString();
+        }
+    }, 2000);
+</script>
+
+</body>
+</html>

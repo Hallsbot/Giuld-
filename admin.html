@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Contact | Guild Glory</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--gold:#ffcc00;
+--red:#ff0044;
+--purple:#8a2be2;
+--glass:rgba(255,255,255,0.07);
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Rajdhani',sans-serif;
+}
+
+body{
+background:#000;
+color:#fff;
+padding-bottom:80px;
+}
+
+header{
+padding:18px;
+text-align:center;
+font-family:Orbitron;
+font-weight:900;
+font-size:20px;
+color:var(--gold);
+border-bottom:1px solid rgba(255,255,255,0.1);
+backdrop-filter:blur(10px);
+}
+
+.container{
+padding:15px;
+display:flex;
+flex-direction:column;
+gap:18px;
+}
+
+/* cards */
+.card{
+background:var(--glass);
+border-radius:14px;
+padding:18px;
+border:1px solid rgba(255,255,255,0.1);
+}
+
+/* buttons */
+.link-btn{
+display:block;
+text-decoration:none;
+margin-top:10px;
+padding:14px;
+border-radius:10px;
+text-align:center;
+font-weight:bold;
+color:#fff;
+background:linear-gradient(90deg,#ff0044,#8a2be2);
+}
+
+/* stats */
+.stats{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.stat-box{
+background:#111;
+padding:15px;
+border-radius:12px;
+text-align:center;
+}
+
+.stat-box h2{
+color:var(--gold);
+}
+
+/* feedback */
+.feedback-box{
+height:140px;
+overflow:hidden;
+}
+
+.scroll{
+animation:scroll 18s linear infinite;
+}
+
+@keyframes scroll{
+0%{transform:translateY(0);}
+100%{transform:translateY(-50%);}
+}
+
+.comment{
+font-size:13px;
+padding:8px 0;
+border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+.comment b{
+color:var(--gold);
+}
+
+/* comment input */
+textarea{
+width:100%;
+height:70px;
+border-radius:10px;
+border:none;
+padding:10px;
+background:#111;
+color:#fff;
+margin-top:10px;
+}
+
+.send-btn{
+margin-top:10px;
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:linear-gradient(90deg,#ff0044,#8a2be2);
+color:white;
+font-weight:bold;
+}
+
+/* bottom nav */
+.bottom-nav{
+position:fixed;
+bottom:0;
+width:100%;
+height:65px;
+background:#000;
+display:flex;
+justify-content:space-around;
+align-items:center;
+border-top:1px solid rgba(255,255,255,0.1);
+}
+
+.nav-item{
+text-align:center;
+font-size:11px;
+color:#777;
+cursor:pointer;
+}
+
+.nav-item.active{
+color:var(--gold);
+}
+
+</style>
+</head>
+
+<body>
+
+<header>GUILD GLORY CONTACT</header>
+
+<div class="container">
+
+<!-- CHANNEL INFO -->
+<div class="card">
+<h3>📢 ZEXISTEY</h3>
+<p style="color:#aaa;margin-top:6px;">
+Guild Glory Official Gaming Community
+</p>
+</div>
+
+<!-- LINKS -->
+<div class="card">
+<h3>🔗 Connect With Us</h3>
+
+<a href="https://youtube.com/@zexistey?si=7apDN3xJq_oKy2ZL" class="link-btn">
+▶ YouTube Channel
+</a>
+
+<a href="https://t.me/ZEXIYT" class="link-btn">
+📢 Telegram Channel
+</a>
+
+</div>
+
+<!-- LIVE STATS -->
+<div class="stats">
+<div class="stat-box">
+<h2 id="players">4,210</h2>
+<p>Active Players</p>
+</div>
+
+<div class="stat-box">
+<h2>99%</h2>
+<p>Positive Feedback</p>
+</div>
+</div>
+
+<!-- FEEDBACK -->
+<div class="card">
+<h3>⭐ Player Feedback</h3>
+
+<div class="feedback-box">
+<div class="scroll" id="feedback-list"></div>
+</div>
+
+</div>
+
+<!-- COMMENT SECTION -->
+<div class="card">
+<h3>💬 Leave Comment</h3>
+
+<textarea id="commentInput" placeholder="Write your feedback..."></textarea>
+<button class="send-btn" onclick="addComment()">Send Feedback</button>
+
+<div id="userComments" style="margin-top:15px;"></div>
+
+</div>
+
+</div>
+
+<!-- NAVIGATION -->
+<nav class="bottom-nav">
+    <div class="nav-item active" onclick="location.href='index.html'">
+        <span class="nav-icon">🏠</span>HOME
+    </div>
+    <div class="nav-item active" onclick="location.href='guild.html'">
+        <span class="nav-icon">🛡️</span>GUILD
+    </div>
+    <div class="nav-item active" onclick="location.href='Purchase.html'">
+        <span class="nav-icon">💎</span>VIP
+    </div>
+    <div class="nav-item active" onclick="location.href='admin.html'">
+        <span class="nav-icon">⚙️</span>SETTING
+    </div>
+</nav>
+
+<script>
+
+/* live players counter */
+setInterval(()=>{
+let num=4000+Math.floor(Math.random()*600);
+document.getElementById("players").innerText=num.toLocaleString();
+},2000);
+
+/* auto feedback */
+const feedback=[
+{u:"EliteGamer",m:"Best guild system ever 🔥"},
+{u:"DabangYT",m:"Telegram support fast hai!"},
+{u:"KingPro",m:"XP boost real working."},
+{u:"ShadowX",m:"UI bahut smooth hai."},
+{u:"RahulFF",m:"Fully trusted community."}
+];
+
+let html="";
+feedback.forEach(f=>{
+html+=`<div class="comment"><b>${f.u}:</b> ${f.m}</div>`;
+});
+
+document.getElementById("feedback-list").innerHTML=html+html;
+
+/* comment add */
+function addComment(){
+let text=document.getElementById("commentInput").value;
+if(text.trim()=="") return;
+
+let div=document.createElement("div");
+div.className="comment";
+div.innerHTML="<b>You:</b> "+text;
+
+document.getElementById("userComments").prepend(div);
+document.getElementById("commentInput").value="";
+}
+
+</script>
+
+</body>
+</html>

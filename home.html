@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>VIP GUILD BOT | SECURE ACCESS</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
+<style>
+:root {
+--gold:#ffcc00;
+--red:#ff0044;
+--purple:#8a2be2;
+--glass:rgba(255,255,255,0.05);
+--border:rgba(255,255,255,0.1);
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Rajdhani',sans-serif;
+-webkit-tap-highlight-color:transparent;
+}
+
+body{
+background:#020202;
+color:#fff;
+overflow-x:hidden;
+min-height:100vh;
+padding-bottom:75px;
+}
+
+/* BG */
+.bg-canvas{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:radial-gradient(circle at 50% 50%, #110022 0%, #000 100%);
+z-index:-1;
+}
+
+.glow-spot{
+position:absolute;
+width:250px;
+height:250px;
+background:var(--red);
+filter:blur(120px);
+opacity:.15;
+animation:float 8s infinite alternate;
+}
+
+@keyframes float{
+0%{transform:translate(0,0);}
+100%{transform:translate(50px,50px);}
+}
+
+/* NAVBAR */
+.navbar{
+padding:18px;
+text-align:center;
+border-bottom:1px solid var(--border);
+backdrop-filter:blur(15px);
+background:rgba(0,0,0,.7);
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.main-title{
+font-family:'Orbitron';
+font-size:22px;
+font-weight:900;
+letter-spacing:4px;
+background:linear-gradient(to right,var(--gold),#fff,var(--red));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.container{
+max-width:450px;
+margin:0 auto;
+padding:15px;
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+/* TRAFFIC */
+.traffic-box{
+background:var(--glass);
+border:1px solid var(--border);
+border-radius:15px;
+padding:12px;
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.live-graph{
+display:flex;
+align-items:flex-end;
+gap:3px;
+height:30px;
+}
+
+.bar{
+width:4px;
+background:var(--gold);
+animation:grow 1.5s infinite ease-in-out;
+}
+
+@keyframes grow{
+0%,100%{height:10px;}
+50%{height:25px;}
+}
+
+/* INPUT */
+.input-card{
+background:var(--glass);
+border:1px solid var(--border);
+border-radius:18px;
+padding:18px;
+box-shadow:0 8px 25px rgba(0,0,0,.5);
+backdrop-filter:blur(10px);
+}
+
+.input-card h3{
+font-size:12px;
+color:var(--gold);
+margin-bottom:10px;
+font-family:'Orbitron';
+letter-spacing:1px;
+}
+
+input,select{
+width:100%;
+padding:14px;
+border-radius:10px;
+border:1px solid rgba(255,255,255,.1);
+background:rgba(0,0,0,.8);
+color:#fff;
+font-size:15px;
+outline:none;
+}
+
+/* FEATURES */
+.feature-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.f-box{
+background:rgba(255,255,255,.02);
+padding:12px;
+border-radius:12px;
+text-align:center;
+border:1px solid var(--border);
+}
+
+.f-box b{color:var(--gold);font-size:13px;}
+.f-box span{font-size:9px;color:#777;}
+
+/* TERMINAL */
+.terminal{
+background:#000;
+border:1px solid #222;
+border-radius:10px;
+padding:10px;
+font-family:'JetBrains Mono';
+font-size:10px;
+height:60px;
+overflow:hidden;
+color:#00ff00;
+opacity:.8;
+}
+
+/* BUTTON */
+.btn-start{
+background:linear-gradient(45deg,#ff0044,#7b00ff);
+border:none;
+padding:18px;
+border-radius:12px;
+color:#fff;
+font-family:'Orbitron';
+font-weight:900;
+font-size:16px;
+cursor:pointer;
+letter-spacing:2px;
+box-shadow:0 8px 20px rgba(255,0,68,.4);
+width:100%;
+}
+
+/* LOADING */
+#loadingModal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.98);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:2000;
+flex-direction:column;
+}
+
+.spinner{
+width:50px;
+height:50px;
+border:3px solid #111;
+border-top:3px solid var(--gold);
+border-radius:50%;
+animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+100%{transform:rotate(360deg);}
+}
+
+/* ===== BOTTOM NAV ===== */
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:65px;
+background:rgba(0,0,0,.85);
+backdrop-filter:blur(15px);
+border-top:1px solid var(--border);
+display:flex;
+justify-content:space-around;
+align-items:center;
+z-index:1500;
+}
+
+.nav-item{
+display:flex;
+flex-direction:column;
+align-items:center;
+font-size:10px;
+color:#888;
+cursor:pointer;
+font-family:'Orbitron';
+}
+
+.nav-icon{
+font-size:18px;
+margin-bottom:3px;
+}
+
+.nav-item.active{
+color:var(--gold);
+text-shadow:0 0 10px var(--gold);
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-canvas">
+<div class="glow-spot" style="top:5%; right:5%;"></div>
+<div class="glow-spot" style="bottom:10%; left:5%; background:var(--purple);"></div>
+</div>
+
+<nav class="navbar">
+<div class="main-title">👑 VIP GUILD PANEL</div>
+</nav>
+
+<div class="container">
+
+<div class="traffic-box">
+<div class="live-graph">
+<div class="bar"></div>
+<div class="bar"></div>
+<div class="bar"></div>
+<div class="bar"></div>
+</div>
+<div>
+<div style="font-size:12px;font-weight:bold;color:var(--gold);">SERVER LOAD: OPTIMIZED</div>
+<div style="font-size:10px;color:#00ff00;">BYPASS STATUS: 100% SECURE</div>
+</div>
+</div>
+
+<div class="input-card">
+<h3>🆔 GUILD UID</h3>
+<input type="number" id="guildUID" placeholder="Enter 8-10 Digit UID">
+</div>
+
+<div class="input-card">
+<h3>🌍 REGION / SERVER</h3>
+<select id="region">
+<option value="IND">INDIA / NEPAL</option>
+<option value="BD">BANGLADESH</option>
+<option value="PK">PAKISTAN</option>
+<option value="BR">BRAZIL / LATAM</option>
+</select>
+</div>
+
+<div class="input-card">
+<h3>📱 CONNECTION BRIDGE</h3>
+<select id="device">
+<option value="Android">Android Secure Port</option>
+<option value="iOS">iOS Cloud Tunnel</option>
+</select>
+</div>
+
+<div class="terminal" id="term-logs">
+> Monitoring server packets...<br>
+> Waiting for user input...
+</div>
+
+<div class="feature-grid">
+<div class="f-box"><b>🛡️ ANTI-BAN</b><span>Protection On</span></div>
+<div class="f-box"><b>🚀 10X SYNC</b><span>Fast Glory</span></div>
+</div>
+
+<button class="btn-start" onclick="startSystem()">ACTIVE GUILD PANEL</button>
+
+</div>
+
+<div id="loadingModal">
+<div class="spinner"></div>
+<div id="load-txt" style="margin-top:20px;color:var(--gold);font-family:Orbitron;">CONNECTING...</div>
+<div style="width:180px;height:2px;background:#111;margin-top:15px;">
+<div id="bar" style="width:0%;height:100%;background:var(--red);"></div>
+</div>
+</div>
+
+<!-- ✅ BOTTOM NAV -->
+<nav class="bottom-nav">
+    <div class="nav-item active" onclick="location.href='index.html'">
+        <span class="nav-icon">🏠</span>HOME
+    </div>
+    <div class="nav-item active" onclick="location.href='guild.html'">
+        <span class="nav-icon">🛡️</span>GUILD
+    </div>
+    <div class="nav-item active" onclick="location.href='Purchase.html'">
+        <span class="nav-icon">💎</span>VIP
+    </div>
+    <div class="nav-item active" onclick="location.href='admin.html'">
+        <span class="nav-icon">⚙️</span>SETTING
+    </div>
+</nav>
+
+<script>
+const logs=[
+"> Initializing bypass...",
+"> Setting up tunnel...",
+"> Fetching region data...",
+"> Anti-ban verified...",
+"> Ready for injection."
+];
+
+let lIdx=0;
+setInterval(()=>{
+const term=document.getElementById('term-logs');
+term.innerHTML+=`> ${logs[lIdx%logs.length]}<br>`;
+lIdx++;
+if(term.innerHTML.split('<br>').length>4){
+term.innerHTML=term.innerHTML.split('<br>').slice(1).join('<br>');
+}
+},3000);
+
+function startSystem(){
+let uid=document.getElementById("guildUID").value;
+if(uid.length<5){
+alert("Please enter a valid Guild UID!");
+return;
+}
+
+const modal=document.getElementById('loadingModal');
+const lText=document.getElementById('load-txt');
+const lBar=document.getElementById('bar');
+
+modal.style.display='flex';
+
+const steps=["INITIALIZING...","BYPASSING SECURITY...","SECURE TUNNELING...","ACCESS GRANTED!"];
+
+let p=0,s=0;
+
+const int=setInterval(()=>{
+p+=2;
+lBar.style.width=p+"%";
+
+if(p%25==0 && s<steps.length){
+lText.innerText=steps[s++];
+}
+
+if(p>=100){
+clearInterval(int);
+localStorage.setItem("guildUID",uid);
+localStorage.setItem("openGuild","true");
+setTimeout(()=>{window.location.href="dashboard.html";},500);
+}
+},50);
+}
+
+function openGuild(){
+localStorage.setItem("openGuild","true");
+window.location.href="dashboard.html";
+}
+</script>
+
+</body>
+</html>
